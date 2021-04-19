@@ -47,38 +47,44 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-blue-200 h-screen p-1">
+    <div className="bg-blue-200 h-screen p-2">
       <Head>
         <title>CoviHelp App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="container mx-auto bg-white rounded-lg p-4">
         <h1 className="font-bold my-1 text-indigo-600 text-lg">CoviHelp</h1>
-        <div className="my-4">
-          <label htmlFor="cars">City:</label>
-          <select className="mx-2 border border-gray-400 p-1 rounded-md" onChange={(e) => setCity(e.target.value)}>
-            {cities.map(data => <option value={data.name} key={data.name}>{data.name}</option>)}
-          </select>
-          &nbsp;&nbsp;
-          <label htmlFor="cars">Filter:</label>
-          <select className="mx-2 border border-gray-400 p-1 rounded-md" onChange={(e) => setFilter(e.target.value)}>
-            {filters.map(data => <option value={data.name} key={data.name}>{data.name}</option>)}
-          </select>
+        <div className="mt-4 mb-2 flex">
+          <div>
+            <div htmlFor="cars" className="mb-2">City:</div>
+            <select className="border border-gray-400 p-1 rounded-md" onChange={(e) => setCity(e.target.value)}>
+              {cities.map(data => <option value={data.name} key={data.name}>{data.name}</option>)}
+            </select>
+          </div>
 
-          <button className="px-2 py-1 bg-indigo-500 text-white rounded-md" onClick={() => getData()}>Search</button>
+          <div className="mx-2 flex-grow">
+            <div htmlFor="cars" className="mb-2">Filter:</div>
+            <select className="border border-gray-400 p-1 rounded-md w-full" onChange={(e) => setFilter(e.target.value)}>
+              {filters.map(data => <option value={data.name} key={data.name}>{data.name}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div className="py-1">
+          <button className="px-2 py-1 bg-indigo-500 text-white rounded-md w-full" onClick={() => getData()}>Search</button>
         </div>
 
         {
           data != null ?
             <div className="my-6">
-              <h1 className="font-bold text-gray-700 my-4">Showing results for: {filter || filters[0].name} in {city || cities[0].name}</h1>
+              <h1 className="font-bold text-gray-600 my-4 text-sm">Showing results for: {filter || filters[0].name} in {city || cities[0].name}</h1>
               {
                 data.map(data => (<InfoCard data={data} key={data.mobile} />))
               }
               {
                 data.length == 0 ? <div>Sorry, no information available at this time.</div> : ""
               }
-            </div> : <div className="bg-gray-50 text-center p-4 rounded-xl text-gray-700">Use search to find help</div>
+            </div> : <div className="bg-gray-50 text-center p-4 rounded-xl text-gray-700 my-4">Use search to find help</div>
         }
       </div>
       <div className="container mx-auto bg-white rounded-lg border-l-4 border-green-600 p-4 mt-4">
