@@ -47,16 +47,15 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-blue-300 h-screen p-4">
+    <div className="bg-blue-300 h-screen p-1">
       <Head>
-        <title>Create Next App</title>
+        <title>CovHelp App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="container mx-auto bg-white rounded-lg p-4">
         <h1 className="font-bold">CovHelp</h1>
         <div className="my-4">
-
-          <label htmlFor="cars">Choose City:</label>
+          <label htmlFor="cars">City:</label>
           <select className="mx-2 border border-gray-400 p-1 rounded-md" onChange={(e) => setCity(e.target.value)}>
             {cities.map(data => <option value={data.name} key={data.name}>{data.name}</option>)}
           </select>
