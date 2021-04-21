@@ -63,14 +63,14 @@ export default function Home() {
         <h1 className="font-bold my-1 text-indigo-600 text-lg">CoviHelp <small className="float-right text-gray-600">Last updated: {appData.lastUpdated}</small></h1>
         <div className="mt-4 mb-2 flex">
           <div>
-            <div htmlFor="cars" className="mb-2">City:</div>
+            <div htmlFor="cars" className="mb-2 font-bold text-sm">City:</div>
             <select className="border border-gray-400 p-1 rounded-md" onChange={(e) => setCity(e.target.value)}>
               {cities.map(data => <option value={data.name} key={data.name}>{data.name}</option>)}
             </select>
           </div>
 
           <div className="mx-2 flex-grow">
-            <div htmlFor="cars" className="mb-2">Filter:</div>
+            <div htmlFor="cars" className="mb-2 font-bold text-sm">Filter:</div>
             <select className="border border-gray-400 p-1 rounded-md w-full" onChange={(e) => setFilter(e.target.value)}>
               {filters.map(data => <option value={data.name} key={data.name}>{data.name}</option>)}
             </select>
@@ -84,6 +84,7 @@ export default function Home() {
         {
           data != null ?
             <div className="my-6">
+              <p className="text-sm p-3 bg-blue-100 text-blue-800 rounded">We try our best to keep the list updated but if contact ran out of resources or not connecting please try with next entry in the list.</p>
               <h1 className="font-bold text-gray-600 my-4 text-sm">Showing results for: {filter || filters[0].name} in {city || cities[0].name}</h1>
               {
                 data.map(data => (<InfoCard data={data} key={data.mobile} />))
