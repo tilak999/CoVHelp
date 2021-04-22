@@ -6,12 +6,12 @@ import 'firebase/firestore'
 const db = firebase.firestore()
 
 async function getAppData() {
-  const snapshots = await (await db.collection("appData").get()).docs[0]
+  const snapshots = await db.collection("appData").doc('data').get()
   return snapshots.data()
 }
 
-async function fetch(collection) {
-  const snapshots = await db.collection(collection).get()
+async function fetch(collection, filter) {
+  const snapshots = await db.collection(collection).where("city","==",filter).get() 
   const data = []
   snapshots.forEach((doc) => data.push(doc.data()));
   return data
@@ -29,28 +29,17 @@ function InfoCard({ data }) {
 }
 
 export default function Home() {
-  const [appData, setAppData] = useState({ lastUpdated: "19-04-2020" })
-  const [cities, setCities] = useState([])
-  const [filters, setFilters] = useState([])
-
+  const [appData, setAppData] = useState({ lastUpdated: "19-04-2020", cities:[], filters:[] })
   const [city, setCity] = useState()
   const [filter, setFilter] = useState()
-
   const [data, setData] = useState()
 
-  useEffect(() => {
-    fetch("cities").then(setCities)
-    fetch("filters").then(setFilters)
-    getAppData().then(setAppData)
-  }, [])
+  useEffect(() => {getAppData().then(setAppData)}, [])
 
   const getData = () => {
-    const selectedCity = city || cities[0].name
-    const selectedFilter = filter || filters[0].name
-
-    fetch(selectedFilter).then((items) => {
-      setData(items.filter(item => item.city.toLocaleLowerCase() == selectedCity.toLocaleLowerCase()))
-    })
+    const selectedCity = city || appData.cities[0]
+    const selectedFilter = filter || appData.filters[0]
+    fetch(selectedFilter, selectedCity.toLocaleLowerCase()).then(setData)
   }
 
   return (
@@ -73,14 +62,14 @@ export default function Home() {
           <div>
             <div htmlFor="cars" className="mb-2 font-bold text-sm">City:</div>
             <select className="border border-gray-400 p-1 rounded-md" onChange={(e) => setCity(e.target.value)}>
-              {cities.map(data => <option value={data.name} key={data.name}>{data.name}</option>)}
+              {appData.cities.map(city => <option value={city} key={city}>{city}</option>)}
             </select>
           </div>
 
           <div className="mx-2 flex-grow">
             <div htmlFor="cars" className="mb-2 font-bold text-sm">Filter:</div>
             <select className="border border-gray-400 p-1 rounded-md w-full" onChange={(e) => setFilter(e.target.value)}>
-              {filters.map(data => <option value={data.name} key={data.name}>{data.name}</option>)}
+              {appData.filters.map(filter => <option value={filter} key={filter}>{filter}</option>)}
             </select>
           </div>
         </div>
@@ -93,7 +82,7 @@ export default function Home() {
           data != null ?
             <div className="my-6">
               <p className="text-sm p-3 bg-blue-100 text-blue-800 rounded">We try our best to keep the list updated but if contact ran out of resources or not connecting please try with next entry in the list.</p>
-              <h1 className="font-bold text-gray-600 my-4 text-sm">Showing results for: {filter || filters[0].name} in {city || cities[0].name}</h1>
+              <h1 className="font-bold text-gray-600 my-4 text-sm">Showing results for: {filter || appData.filters[0]} in {city || appData.cities[0]}</h1>
               {
                 data.map(data => (<InfoCard data={data} key={data.mobile} />))
               }
