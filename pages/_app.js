@@ -1,8 +1,6 @@
 import 'tailwindcss/tailwind.css'
-
 import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
+import 'firebase/analytics';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDEJnmLzj5iVbzXpooRYLDJmlWw_HuPDi4",
@@ -14,9 +12,8 @@ const firebaseConfig = {
     measurementId: "G-C8KNPMB8TJ"
 };
 
-if (firebase.apps.length == 0) firebase.initializeApp(firebaseConfig)
-
 function MyApp({ Component, pageProps }) {
+  if (firebase.apps.length == 0) firebase.initializeApp(firebaseConfig)
   return <Component {...pageProps} />
 }
 

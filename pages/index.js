@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-const db = firebase.firestore()
-
 async function getAppData() {
+  const db = firebase.firestore()
   const snapshots = await db.collection("appData").doc('data').get()
   return snapshots.data()
 }
 
 async function fetch(collection, filter) {
+  const db = firebase.firestore()
   const snapshots = await db.collection(collection).where("city","==",filter).get() 
   const data = []
   snapshots.forEach((doc) => data.push(doc.data()));
